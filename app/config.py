@@ -60,7 +60,11 @@ class Settings(BaseSettings):
         try:
             return json.loads(self.cors_origins)
         except json.JSONDecodeError:
-            return ["http://localhost:3000", "http://localhost:5173"]
+            return [
+                "http://localhost:3000", 
+                "http://localhost:5173",
+                "https://blog-testing-framework-frontend-production.up.railway.app"
+            ]
     
     @property
     def metric_weights(self) -> dict:
