@@ -56,15 +56,16 @@ class Settings(BaseSettings):
     
     @property
     def cors_origins_list(self) -> List[str]:
-        """Parse CORS origins from JSON string"""
+        """Parse CORS origins from JSON string or comma-separated list"""
+        if not self.cors_origins:
+            return ["*"]
+
         try:
+            # Try parsing as JSON first
             return json.loads(self.cors_origins)
         except json.JSONDecodeError:
-            return [
-                "http://localhost:3000", 
-                "http://localhost:5173",
-                "https://blog-testing-framework-frontend-production.up.railway.app"
-            ]
+            # Fallback to comma-separated string
+            return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
     
     @property
     def metric_weights(self) -> dict:
